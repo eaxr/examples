@@ -1,3 +1,6 @@
+#!/usr/bin/env python3
+# coding: utf-8
+
 from synology_dsm import SynologyDSM
 import json
 import sys
