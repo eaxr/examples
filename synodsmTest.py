@@ -20,10 +20,11 @@ class SynoZBX():
     def get(self):
         api = SynologyDSM(self.host, self.port, self.user, self.pasw)
         api.storage.update()
-        data = [{}]
+        data = []
 
         for disk_id in api.storage.disks_ids:
-            data[0][str(api.storage.disk_name(disk_id))] = str(api.storage.disk_smart_status(disk_id))
+            data.append({"#DRIVEID":str(api.storage.disk_name(disk_id)),
+                         "#DRIVESTATUS":str(api.storage.disk_smart_status(disk_id))})
         return json.dumps(data)
 
 def main():
