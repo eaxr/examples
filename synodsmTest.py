@@ -24,14 +24,16 @@ class SynoZBX():
 
         if discovery == "discovery":
             for num, disk_id in enumerate(api.storage.disks_ids):
-                data.append({"{#DRIVEID}":str(api.storage.disk_name(disk_id)),
-                             "{#DRIVENUM}":str(num)})
+                data.append({"{#DRIVENAME}":str(api.storage.disk_name(disk_id)),
+                             "{#DRIVEID}":str(disk_id),
+                             "{#DRIVENUMB}":str(num),
+                             "{#DRIVESTATUS}":str(api.storage.disk_smart_status(disk_id))})
+            return json.dumps(data)
         else:
-            for disk_id in api.storage.disks_ids:
-                if str(api.storage.disk_name(disk_id)) == discovery:
-                    data.append({"{#DRIVESTATUS}":str(api.storage.disk_smart_status(disk_id))})
-
-        return json.dumps(data)
+            if str(api.storage.disk_smart_status(discovery)) == "normal":
+                data = 1
+            else: data = 0
+            return data
 
 def main():
     js = SynoZBX(sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4])
